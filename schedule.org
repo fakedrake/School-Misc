@@ -1,13 +1,14 @@
-| Time    | Monday            | Tuesday                           | Wednesday | Thursday      | Friday |
-|---------+-------------------+-----------------------------------+-----------+---------------+--------|
-| 9 - 10  |                   |                                   |           |               |        |
-| 10 - 11 | Programming (lab) |                                   |           |               |        |
-| 11 - 12 | Programming (lab) |                                   |           | AI (Lab)      |        |
-| 12 - 13 | Programming (lab) | Pattern Recognition / Programming |           | AI (Lab)      |        |
-| 13 - 14 |                   | Pattern Recognition / Programming |           | DB (Lab)      |        |
-| 14 - 15 |                   | Pattern Recognition / DB (lab)    |           | DB (Lab)      |        |
-| 15 - 16 |                   | Info theory         / DB (lab)    | AI        | Graph 3D / DB |        |
-| 16 - 17 |                   | Info theory                       | AI        | Graph 3D / DB |        |
-| 17 - 18 |                   | Info theory                       | AI        | Graph 3D / DB |        |
-| 18 - 19 |                   |                                   |           |               |        |
-| 19 - 20 |                   |                                   |           |               |        |
+| Time    | Monday      | Tuesday                                 | Wednesday | Thursday | Friday |
+|---------+-------------+-----------------------------------------+-----------+----------+--------|
+| 9 - 10  |             |                                         |           |          |        |
+| 10 - 11 | Programming |                                         |           |          |        |
+| 11 - 12 | Programming |                                         |           | AI (lab) |        |
+| 12 - 13 | Programming | Pattern Recognition / Programming (lab) |           | AI (lab) |        |
+| 13 - 14 |             | Pattern Recognition / Programming (lab) |           | DB (Lab) |        |
+| 14 - 15 |             | Pattern Recognition                     |           | DB (Lab) |        |
+| 15 - 16 |             | Info theory                             | AI        | DB       |        |
+| 16 - 17 |             | Info theory                             | AI        | DB       |        |
+| 17 - 18 |             | Info theory                             | AI        | DB       |        |
+| 18 - 19 |             |                                         |           | Graph 3D |        |
+| 19 - 20 |             |                                         |           | Graph 3D |        |
+| 20 -21  |             |                                         |           | Graph 3D |        |
