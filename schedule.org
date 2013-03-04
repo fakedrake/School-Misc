@@ -11,4 +11,4 @@
 | 17 - 18 |             | Info theory                             | AI        | DB       |        |
 | 18 - 19 |             |                                         |           | Graph 3D |        |
 | 19 - 20 |             |                                         |           | Graph 3D |        |
-| 20 -21  |             |                                         |           | Graph 3D |        |
+| 20 - 21 |             |                                         |           | Graph 3D |        |
