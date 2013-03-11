@@ -17,6 +17,21 @@ MAX_Y = 500
 def vsub(p,q):
     return tuple(map(lambda x1,x2:x1-x2, p, q))
 
+def vdot(p,q):
+    return p[0]*q[0] + p[1]*q[1]
+
+def vcross(p, q):
+    """Cross product"""
+    p[0]*q[1] - p[1]*q[0]
+
+def tarea(p1, p2, p3):
+    """Area of p triangle. This may be used to compare distance point from
+    line.
+
+    """
+    return vcross(vsub(p1,p2), vsub(p2,p3))
+
+
 class Plane(object):
     """The plane with the points.
     """
@@ -56,6 +71,21 @@ class Plane(object):
                 return False
 
         return True
+
+    def _qhull(self, min_p, max_p, candidates):
+        """The qhull recursion. Return min_p + the candidates in the hull."""
+
+        # Filter candidates to only the ones left from the line.
+
+        # Find the furthest candidate
+        new_p = max(candidates, key=lambda x:tarea(min_p, max_p, x))
+
+    def quickhull(self):
+        """The quickhull algorithm."""
+        min_p = min(self.points)
+        max_p = max(self.points)
+
+        return self._qhull(self, min_p, max_p, self.points) + self._qhull(self, max_p, min_p, self.points)
 
     def dumb_convex_hull(self):
         """Return an unsorted convex hull."""
@@ -110,7 +140,11 @@ class Visualize(object):
 
         return tuple(map(lambda x,y:x+y,min_geo, padding))
 
-    def convex_hull_image(self, hull_filename=HULL_FILENAME, image=None):
+    def convex_hull_image(self, image=None):
+        """Create a convex hull image. You may want to write on top of another
+        image.
+
+        """
         if image is None:
             image = Image.new("RGB", self.geometry())
 
@@ -128,6 +162,6 @@ if __name__ == "__main__":
 
     p = Plane( int(argv[1]) )
     s = Visualize(p)
-    points = s.points_image()
-    hull = s.convex_hull_image(image=points)
-    points.show()
+    hull = s.convex_hull_image()
+    points = s.points_image(image=hull)
+    points.save(HULL_FILENAME)
