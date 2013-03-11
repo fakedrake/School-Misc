@@ -22,6 +22,8 @@ class Plane(object):
         else:
             self.points = points
 
+        self.min_p = min(self.points, key=lambda ((x,y)):y)
+
     def edges(self):
         for si,start in enumerate(self.points):
             for end in self.points[si+1:]:
@@ -44,12 +46,26 @@ class Plane(object):
         return True
 
     def dumb_convex_hull(self):
+        """Return an unsorted convex hull."""
         ret = set()
         for edge in self.edges():
             if self.edge_in_hull(edge):
                 ret.update(edge)
 
         return list(ret)
+
+    def angle_key(self, p):
+        """Return the tangent of the vector to the lowest point."""
+        x,y = tuple(map(lambda x1,x2:x1-x2, p, self.min_p)) # p - min_p
+
+        if y == 0:
+            return -float('Inf')
+
+        return y/x
+
+    def convex_hull(self):
+        hull = self.dumb_convex_hull()
+        return sorted(hull, key=self.angle_key)
 
 
 class Visualize(object):
@@ -83,7 +99,7 @@ class Visualize(object):
             hull_image = Image.new("RGB", self.geometry())
 
         draw = ImageDraw.Draw(hull_image)
-        draw.polygon(self.plane.dumb_convex_hull())
+        draw.polygon(self.plane.convex_hull())
 
         return hull_image
 
