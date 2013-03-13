@@ -1,3 +1,4 @@
+#+LaTeX_CLASS: fakedrake-org-article
 #+AUTHOR: Chris Perivolaropulos
 #+TITLE: Convex Hull with Python
 
@@ -22,7 +23,7 @@
    : pip install PIL
 
    If you are on windows good luck to you :P (kidding check out the
-   [[http://www.pythonware.com/products/pil/][official site]])
+   [[http://www.pythonware.com/products/pil/][official site]] )
 
    Run the script like this
 
@@ -31,15 +32,15 @@
    to get an image of the drawn convex hull off 1000 points. By default
    the script uses the quickhull algorithm but a bruteforcer is also
    implemented and can be used if you change the value of
-   `SLOW_ALGORITHM` at the top of the script to `True`.
+   =SLOW_ALGORITHM= at the top of the script to =True=.
 
 *** Getting our hands dirty
     Lets get a bit more into the code. There are two classes
-    implemented. `Plane` and `VisualizePlane`. `Plane` is the main
-    logic and `VisualizePlane` is a thin layer of code to handle
+    implemented. =Plane= and =VisualizePlane=. =Plane= is the main
+    logic and =VisualizePlane= is a thin layer of code to handle
     representation. Plane can be initialized with a set of points or
     more commonly with the number of random points it has to generate
-    on it's own. You may use `convex_hull()` to get the set of points
+    on it's own. You may use =convex_hull()= to get the set of points
     that are the convex hull in clockwise order.. There is no caching
     involved in this at the moment. Convex hull calculation can be
     done using the fast or the slow algorithm. The slow algorithm is
@@ -47,9 +48,9 @@
     quickhull as it is quite fast (O(nlogn) and in the case of evenly
     distributed points probably even better) and very easy to implement.
 
-    The `VisualizePlane` class is initialized with a Plane. Then you
-    may use `hull_image()` method to get the convex hull of the image
-    only and the `points_image()` method to get an image of the
+    The =VisualizePlane= class is initialized with a Plane. Then you
+    may use =hull_image()= method to get the convex hull of the image
+    only and the =points_image()= method to get an image of the
     points. Both those can accept an image to overwrite instead of
     generating a new one.
 
