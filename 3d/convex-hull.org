@@ -1,0 +1,137 @@
+#+AUTHOR: Chris Perivolaropulos
+#+TITLE: Convex Hull with Python
+
+* Convex Hull Report
+  This is the report on a project to make an algorithm to calculate
+  the convex hull.
+** Implementation
+*** General use
+   I implemented the whole project in python mostly because of my
+   fluency at it and also because it is easier to read without
+   sacrificing much speed-wise. I tried to make the code more readable
+   than efficient and to use doc strings and comments but here is a
+   quick description.
+
+   First of all you need PIL to see anything on the screen. On any
+   unix-based with setup tools installed you may run
+
+   : easy_install PIL
+
+   or if you have distutils (recommended)
+
+   : pip install PIL
+
+   If you are on windows good luck to you :P (kidding check out the
+   [[http://www.pythonware.com/products/pil/][official site]])
+
+   Run the script like this
+
+   : python convex-hull.py 1000
+
+   to get an image of the drawn convex hull off 1000 points. By default
+   the script uses the quickhull algorithm but a bruteforcer is also
+   implemented and can be used if you change the value of
+   `SLOW_ALGORITHM` at the top of the script to `True`.
+
+*** Getting our hands dirty
+    Lets get a bit more into the code. There are two classes
+    implemented. `Plane` and `VisualizePlane`. `Plane` is the main
+    logic and `VisualizePlane` is a thin layer of code to handle
+    representation. Plane can be initialized with a set of points or
+    more commonly with the number of random points it has to generate
+    on it's own. You may use `convex_hull()` to get the set of points
+    that are the convex hull in clockwise order.. There is no caching
+    involved in this at the moment. Convex hull calculation can be
+    done using the fast or the slow algorithm. The slow algorithm is
+    the bruteforcer requested, for the faster algorithm I chose
+    quickhull as it is quite fast (O(nlogn) and in the case of evenly
+    distributed points probably even better) and very easy to implement.
+
+    The `VisualizePlane` class is initialized with a Plane. Then you
+    may use `hull_image()` method to get the convex hull of the image
+    only and the `points_image()` method to get an image of the
+    points. Both those can accept an image to overwrite instead of
+    generating a new one.
+
+** Benchmark
+   The slow algorithm is quite bad as expected compared to
+   logarithmic-time algorithms. Unfortunately I couldn't test how that
+   compares to the provided solution as I didn't manage to run it
+   without visual studio (also because I would prefer to stay away
+   from anything microsoft related). I present however my own results
+   and the results that Marios Bikos got from the example code ().
+
+   So my results would be:
+
+   #+BEGIN_SRC python
+>>> p = Plane(10000)
+>>> cProfile.run("p.convex_hull()")
+         591782 function calls (591756 primitive calls) in 0.273 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.273    0.273 <string>:1(<module>)
+        1    0.000    0.000    0.273    0.273 convex-hull.py:114(convex_hull)
+   107578    0.064    0.000    0.173    0.000 convex-hull.py:17(vsub)
+   215156    0.027    0.000    0.027    0.000 convex-hull.py:18(<lambda>)
+    53789    0.019    0.000    0.019    0.000 convex-hull.py:23(vcross)
+    53789    0.043    0.000    0.235    0.000 convex-hull.py:27(tarea)
+     28/2    0.000    0.000    0.271    0.135 convex-hull.py:75(_qhull)
+    42526    0.018    0.000    0.207    0.000 convex-hull.py:79(<lambda>)
+    11263    0.004    0.000    0.049    0.000 convex-hull.py:85(<lambda>)
+        1    0.000    0.000    0.273    0.273 convex-hull.py:89(quickhull)
+       28    0.010    0.000    0.217    0.008 {filter}
+       28    0.000    0.000    0.000    0.000 {len}
+   107578    0.082    0.000    0.109    0.000 {map}
+       14    0.005    0.000    0.054    0.004 {max}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.001    0.001    0.001    0.001 {min}
+
+
+   #+END_SRC
+
+   and including the graphics part:
+
+   #+BEGIN_SRC bash
+fakedrake@Keep ~/Projects/School-Misc/3d (quickhull*) $ time bin/python convex-hull.py 10000
+bin/python convex-hull.py 10000  0.28s user 0.01s system 99% cpu 0.296 total
+   #+END_SRC
+
+   The slow algorithm would do quite bad:
+   #+BEGIN_SRC bash
+fakedrake@Keep ~/Projects/School-Misc/3d (quickhull*) $ time bin/python convex-hull.py 1000 --slow
+bin/python convex-hull.py 1000 --slow  14.55s user 0.02s system 99% cpu 14.597 total
+   #+END_SRC
+
+   and i must admit that sometimes it doesn't even get it completely
+   right. I guess I am to blame for that but there you have it...
+
+   The current slow implementation screws up much worse in the 10000
+   point case. Not to mention the horrible timing.
+
+   #+BEGIN_SRC bash
+fakedrake@Keep ~/Projects/School-Misc/3d (quickhull*) $ time bin/python convex-hull.py 10000 --slow
+bin/python convex-hull.py 10000 --slow  949.67s user 0.03s system 99% cpu 15:51.07 total
+   #+END_SRC
+
+   Just for the laughs here is what I got.
+     #+CAPTION: What am I doing with my life?
+     #+LABEL:   Epic fail
+     [[./hull.bad.png]]
+
+
+   My CPU model would be:
+   #+BEGIN_SRC bash
+fakedrake@Keep ~/Projects/School-Misc/3d (quickhull*) $ cat /proc/cpuinfo | grep "model name" | head -1
+model name	: Intel(R) Core(TM) i7-2670QM CPU @ 2.20GHz
+   #+END_SRC
+
+   Example code Marios' on Phenom x3 in the 10000 case did 0.35s. Not
+   very comparable due to the processing power (also on windows but I
+   am not quite sure how that would affect the result) but my O(nlogn)
+   should be quite short when head to head with O(nlogh) that I am
+   guessing a production library would use.
+
+** Conclusion
+   Bruteforce sucks, divide and conquer(-ish) for the win!
